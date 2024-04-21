@@ -4,7 +4,9 @@ import org.springframework.security.core.GrantedAuthority;
 
 public enum Role implements GrantedAuthority {
 
-    ROLE_ADMIN("ADMIN");
+    ROLE_ADMIN("ADMIN"),
+    ROLE_MODERATOR("MODERATOR");
+
 
     private String value;
 

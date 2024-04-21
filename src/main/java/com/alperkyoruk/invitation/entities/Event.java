@@ -1,5 +1,6 @@
 package com.alperkyoruk.invitation.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,11 +40,16 @@ public class Event {
     @Column(name = "max_guests")
     private int maxGuests;
 
+    @Column(name = "total_guests")
+    private int totalGuests;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "event", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Guest> guests;
 
     @ManyToOne(targetEntity = User.class, cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
 

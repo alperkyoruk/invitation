@@ -33,4 +33,7 @@ public class Guest {
     @JoinColumn(name = "event_id")
     private Event event;
 
+    @Column(columnDefinition = "bytea")
+    private byte[] qrCode;
+
 }

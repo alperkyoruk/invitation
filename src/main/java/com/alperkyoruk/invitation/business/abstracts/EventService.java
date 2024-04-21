@@ -3,14 +3,17 @@ package com.alperkyoruk.invitation.business.abstracts;
 import com.alperkyoruk.invitation.core.result.DataResult;
 import com.alperkyoruk.invitation.core.result.Result;
 import com.alperkyoruk.invitation.entities.Event;
+import com.alperkyoruk.invitation.entities.dtos.RequestEventDto;
 
 import java.util.List;
 
 public interface EventService {
 
-    Result addEvent(Event event);
+    Result addEvent(RequestEventDto requestEventDto);
 
-    Result updateEvent(Event event);
+    Result updateEvent(RequestEventDto requestEventDto);
+
+    Result updateGuestCount(Event event);
 
     Result deleteEvent(int id);
 
@@ -22,7 +25,9 @@ public interface EventService {
 
     DataResult<List<Event>> findAll();
 
-    DataResult <List<Event>> findAllByGuestId(String guestId);
+    DataResult<Event> findByGuestId(String guestId);
+
+
 
 
 

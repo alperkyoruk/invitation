@@ -9,7 +9,9 @@ import java.util.List;
 
 public interface UserService extends UserDetailsService {
 
-    Result addUser(User user);
+    Result addAdmin(User user);
+
+    Result addModerator(User user);
 
     DataResult<List<User>> getUsers();
 
@@ -17,6 +19,5 @@ public interface UserService extends UserDetailsService {
 
     DataResult<User> getByUsername(String username);
 
-    DataResult<User> getByEmail(String email);
 
 }
