@@ -3,10 +3,7 @@ package com.alperkyoruk.invitation.business.concretes;
 import com.alperkyoruk.invitation.business.abstracts.EventService;
 import com.alperkyoruk.invitation.business.abstracts.UserService;
 import com.alperkyoruk.invitation.business.constants.Messages;
-import com.alperkyoruk.invitation.core.result.DataResult;
-import com.alperkyoruk.invitation.core.result.Result;
-import com.alperkyoruk.invitation.core.result.SuccessDataResult;
-import com.alperkyoruk.invitation.core.result.SuccessResult;
+import com.alperkyoruk.invitation.core.result.*;
 import com.alperkyoruk.invitation.dataAccess.EventDao;
 import com.alperkyoruk.invitation.entities.Event;
 import com.alperkyoruk.invitation.entities.dtos.RequestEventDto;
@@ -117,7 +114,7 @@ public class EventManager implements EventService {
     public DataResult<Event> findById(int id) {
         var result = eventDao.findById(id);
         if(result == null){
-            return new SuccessDataResult<>(Messages.EventNotFound);
+            return new ErrorDataResult<>(Messages.EventNotFound);
         }
 
         return new SuccessDataResult<>(result, Messages.EventFound);
@@ -135,7 +132,7 @@ public class EventManager implements EventService {
 
     @Override
     public DataResult<List<Event>> findAll() {
-        var result = eventDao.findAll();
+        var result = eventDao.findAllByOrderByEventDateAsc();
         if(result.isEmpty()){
             return new SuccessDataResult<>(Messages.EventNotFound);
         }
@@ -151,6 +148,16 @@ public class EventManager implements EventService {
         }
 
         return new SuccessDataResult<>(result, Messages.EventFound);
+    }
+
+    @Override
+    public DataResult<List<Event>> findAllByNameContains(String name) {
+        var result = eventDao.findAllByNameContainsIgnoreCaseOrderByEventDate(name);
+        if(result.isEmpty()){
+            return new SuccessDataResult<>(Messages.EventNotFound);
+        }
+
+        return new SuccessDataResult<>(result, Messages.EventsFound);
     }
 
 

@@ -13,5 +13,7 @@ public interface GuestDao extends JpaRepository<Guest, Integer> {
 
     List<Guest> findAllByEventId(int eventId);
 
+    List<Guest> findAllByFullNameIgnoreCase(String name);
+
 
 }

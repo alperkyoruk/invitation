@@ -27,6 +27,7 @@ public interface EventService {
 
     DataResult<Event> findByGuestId(String guestId);
 
+    DataResult<List<Event>> findAllByNameContains(String name);
 
 
 

@@ -21,9 +21,15 @@ public interface GuestService {
 
     DataResult<List<Guest>> findAllByEventUrl(String eventUrl);
 
+    DataResult<List<Guest>> findAllByEventId(int eventId);
+
     DataResult <byte[]> getQRCodeImage(String guestId);
 
+    DataResult<List<Guest>> findAllByNameContains(String name);
+
     Result guestConfirmation(String guestId, boolean isAttending, int guestCount);
+
+    DataResult<Integer> getEventIdById(int id);
 
 
 }

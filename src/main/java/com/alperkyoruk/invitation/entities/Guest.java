@@ -1,5 +1,6 @@
 package com.alperkyoruk.invitation.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,6 +32,7 @@ public class Guest {
 
     @ManyToOne(targetEntity = Event.class, cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id")
+    @JsonIgnore
     private Event event;
 
     @Column(columnDefinition = "bytea")

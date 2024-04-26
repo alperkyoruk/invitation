@@ -100,6 +100,14 @@ public class GuestManager implements GuestService {
             return new SuccessResult(Messages.GuestNotFound);
         }
 
+        var event = result.getEvent();
+        if (event == null) {
+            return new SuccessResult(Messages.EventNotFound);
+        }
+
+        event.setTotalGuests(event.getTotalGuests() - result.getGuestCount());
+        eventService.updateGuestCount(event);
+
         guestDao.delete(result);
 
         return new SuccessResult(Messages.GuestDeleted);
@@ -139,29 +147,34 @@ public class GuestManager implements GuestService {
     public Result guestConfirmation(String guestId, boolean isAttending, int guestCount) {
         var result = findByGuestId(guestId).getData();
         if (result == null) {
-            return new SuccessResult(Messages.GuestNotFound);
+            return new ErrorResult(Messages.GuestNotFound);
+        }
+
+        if(result.isAttending()){
+            return new ErrorResult(Messages.GuestAlreadyConfirmed);
         }
 
         var event = eventService.findByGuestId(guestId).getData();
         if (event == null) {
-            return new SuccessResult(Messages.EventNotFound);
+            return new ErrorResult(Messages.EventNotFound);
         }
 
         if(event.getTotalGuests() + guestCount > event.getMaxGuests()){
-            return new SuccessResult(Messages.GuestCountExceed);
+            return new ErrorResult(Messages.GuestCountExceed);
         }
 
         if (event.getMaxGuestsPerPerson() < guestCount) {
-            return new SuccessResult(Messages.GuestCountExceed);
+            return new ErrorResult(Messages.GuestCountExceed);
         }
 
         if (event.getExpireDate().before(new Date())) {
-            return new SuccessResult(Messages.EventExpired);
+            return new ErrorResult(Messages.EventExpired);
         }
 
         var guest = result;
         guest.setAttending(isAttending);
         guest.setGuestCount(guestCount);
+        event.setTotalGuests(event.getTotalGuests() + guestCount);
 
         guestDao.save(guest);
 
@@ -174,6 +187,42 @@ public class GuestManager implements GuestService {
         secureRandom.nextBytes(randomBytes);
         return Base64.getUrlEncoder().encodeToString(randomBytes);
     }
+
+    @Override
+    public DataResult<List<Guest>> findAllByEventId(int eventId) {
+        var result = guestDao.findAllByEventId(eventId);
+        if (result == null) {
+            return new SuccessDataResult<>(Messages.GuestNotFound);
+        }
+
+        return new SuccessDataResult<>(result, Messages.GuestsFound);
+    }
+
+    @Override
+    public DataResult<List<Guest>> findAllByNameContains(String name) {
+        var result = guestDao.findAllByFullNameIgnoreCase(name);
+        if (result.isEmpty()) {
+            return new SuccessDataResult<>(Messages.GuestNotFound);
+        }
+
+        return new SuccessDataResult<>(result, Messages.GuestsFound);
+    }
+
+    @Override
+    public DataResult<Integer> getEventIdById(int id) {
+        var result = findById(id).getData();
+        if (result == null) {
+            return new ErrorDataResult<>(Messages.GuestNotFound);
+        }
+
+        var event = result.getEvent();
+        if (event == null) {
+            return new ErrorDataResult<>(Messages.EventNotFound);
+        }
+
+        return new SuccessDataResult<>(event.getId(), Messages.EventFound);
+    }
+
 
     public static BufferedImage generateQRCodeImage(String barcodeText) throws Exception {
 

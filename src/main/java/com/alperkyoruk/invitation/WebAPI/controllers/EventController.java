@@ -26,7 +26,7 @@ public class EventController {
     }
 
     @PostMapping("/deleteEvent")
-    public Result deleteEvent(@RequestBody int id){
+    public Result deleteEvent(@RequestParam int id){
         return eventService.deleteEvent(id);
     }
 
@@ -55,6 +55,10 @@ public class EventController {
         return eventService.findByGuestId(guestId);
     }
 
+    @GetMapping("/findAllByNameContains")
+    public Result findAllByNameContains(@RequestParam String name){
+        return eventService.findAllByNameContains(name);
+    }
 
 
 }

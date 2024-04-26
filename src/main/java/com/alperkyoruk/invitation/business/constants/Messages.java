@@ -30,4 +30,5 @@ public class Messages {
     public static String EventExpired = "Event is expired.";
     public static String QRCodeGenerated = "QR Code generated successfully.";
     public static String QRCodeConversionFailed = "QR Code conversion failed.";
+    public static String GuestAlreadyConfirmed = "Guest already confirmed.";
 }

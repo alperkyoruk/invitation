@@ -26,7 +26,7 @@ public class GuestController {
     }
 
     @PostMapping("/deleteGuest")
-    public Result deleteGuest(@RequestBody int id){
+    public Result deleteGuest(@RequestParam int id){
         return guestService.deleteGuest(id);
     }
 
@@ -40,9 +40,24 @@ public class GuestController {
         return guestService.findById(id);
     }
 
-    @GetMapping("/findAllByEventId")
+    @GetMapping("/getEventIdByGuestId")
+    public Result getEventIdByGuestId(@RequestParam int id){
+        return guestService.getEventIdById(id);
+    }
+
+    @GetMapping("/findAllByEventUrl")
     public Result findAllByEventId(@RequestParam String eventUrl){
         return guestService.findAllByEventUrl(eventUrl);
+    }
+
+    @GetMapping("/findAllByEventId")
+    public Result findAllByEventId(@RequestParam int eventId){
+        return guestService.findAllByEventId(eventId);
+    }
+
+    @GetMapping("/findAllByNameContains")
+    public Result findAllByNameContains(@RequestParam String name){
+        return guestService.findAllByNameContains(name);
     }
 
     @PostMapping("/guestConfirm")
