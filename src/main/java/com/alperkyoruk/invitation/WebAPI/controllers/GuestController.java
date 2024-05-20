@@ -60,6 +60,11 @@ public class GuestController {
         return guestService.findAllByNameContains(name);
     }
 
+    @GetMapping("findGuestsByEventIdAndName")
+    public Result findGuestsByEventIdAndName(@RequestParam int eventId, @RequestParam String name){
+        return guestService.findAllByEventIdAndFullNameContains(eventId, name);
+    }
+
     @PostMapping("/guestConfirm")
     public Result guestConfirm(@RequestParam String guestId, @RequestParam boolean isAttending, @RequestParam int guestCount){
         return guestService.guestConfirmation(guestId, isAttending, guestCount);

@@ -223,6 +223,17 @@ public class GuestManager implements GuestService {
         return new SuccessDataResult<>(event.getId(), Messages.EventFound);
     }
 
+    @Override
+    public DataResult<List<Guest>> findAllByEventIdAndFullNameContains(int eventId, String name) {
+        var result = guestDao.findAllByEventIdAndFullNameContainsIgnoreCase(eventId, name);
+        if (result.isEmpty()) {
+            return new SuccessDataResult<>(Messages.GuestNotFound);
+        }
+
+
+        return new SuccessDataResult<>(result, Messages.GuestsFound);
+    }
+
 
     public static BufferedImage generateQRCodeImage(String barcodeText) throws Exception {
 
@@ -260,7 +271,7 @@ public class GuestManager implements GuestService {
 
     private byte[] generateQRCodeImagee(String qrCodeData) {
         try {
-            // Import ZXing libraries
+            // Import ZXing librarixes
             int width = 200; // Adjust width and height as needed
             int height = 200;
             BitMatrix matrix = new MultiFormatWriter().encode(qrCodeData, BarcodeFormat.QR_CODE, width, height);

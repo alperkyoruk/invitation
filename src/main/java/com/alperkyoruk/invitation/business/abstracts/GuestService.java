@@ -31,5 +31,7 @@ public interface GuestService {
 
     DataResult<Integer> getEventIdById(int id);
 
+    DataResult<List<Guest>> findAllByEventIdAndFullNameContains(int eventId, String name);
+
 
 }
